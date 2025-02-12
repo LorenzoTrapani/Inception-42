@@ -33,7 +33,7 @@ services:
     build: requirements/mariadb/.
     container_name: mariadb
     volumes:
-      - ${VOLUME_ROOT}/mariadb:/var/lib/mysql
+      - ${MARIADB_VOLUME}:/var/lib/mysql
     networks:
       - inception_net
     env_file:
