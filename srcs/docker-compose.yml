@@ -7,8 +7,9 @@ services:
     ports:
       - "443:443"
     volumes:
-     - ${WP_VOLUME}:/var/www/html
+      - ./web:/var/www/html  # Cartella locale => Cartella nel container
       - ${CERTS_VOLUME}:/etc/ssl/certs
+      - ./requirements/nginx/nginx.conf:/etc/nginx/nginx.conf
     networks:
       - inception_net
     depends_on:
