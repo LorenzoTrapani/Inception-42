@@ -32,4 +32,7 @@ remove:
 prune:
 	docker system prune -f
 
+reset:
+	$(DOCKER_COMPOSE) down -v
+
 fclean: stop remove prune
