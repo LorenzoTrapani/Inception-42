@@ -4,7 +4,7 @@ echo "Inizializzo MariaDB..."
 
 # Assicurati che la directory del socket esista
 mkdir -p /run/mysqld
-chown -R mysql:mysql /run/mysqld
+# chown -R mysql:mysql /run/mysqld
 
 # Inizializza il database se non è già stato inizializzato
 if [ ! -d "/var/lib/mysql/mysql" ]; then
@@ -20,10 +20,10 @@ mysqld --skip-networking &
 MYSQL_PID=$!
 
 # Attendi che MySQL sia pronto
-until mysqladmin ping --silent; do
-    echo "Aspettando che MySQL sia pronto..."
-    sleep 1
-done
+# until mysqladmin ping --silent; do
+#     echo "Aspettando che MySQL sia pronto..."
+#     sleep 1
+# done
 
 mysql -u root <<EOF
 CREATE DATABASE IF NOT EXISTS wordpress;

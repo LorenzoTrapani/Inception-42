@@ -22,13 +22,13 @@ if [ ! -f /var/www/wp-config.php ]; then
   echo "$wp_secret_keys" >> /var/www/html/wp-config.php
 
   # Installa WordPress
-  #./wp-cli.phar core install \
-  #  --url=localhost \
-  #  --title=inception \
-  #  --admin_user=admin \
-  #  --admin_password=admin \
-  #  --admin_email=admin@admin.com \
-  #  --allow-root
+  ./wp-cli.phar core install \
+   --url=localhost \
+   --title=inception \
+   --admin_user=admin \
+   --admin_password=admin \
+   --admin_email=admin@admin.com \
+   --allow-root
 fi
 
 echo "wp installato"

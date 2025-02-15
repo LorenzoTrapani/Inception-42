@@ -8,6 +8,8 @@ build:
 
 up: build
 	$(DOCKER_COMPOSE) up
+up-build: build
+	$(DOCKER_COMPOSE) up --build
 
 # check if container are running, if yes stop
 stop:
@@ -33,6 +35,6 @@ prune:
 	docker system prune -f
 
 reset:
-	$(DOCKER_COMPOSE) down -v
+	$(DOCKER_COMPOSE) down -v --rmi all
 
 fclean: stop remove prune
