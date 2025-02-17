@@ -5,10 +5,10 @@ RUN apt-get update -y && apt-get upgrade -y && apt install -y php-fpm \
     curl
 
 COPY www.conf /etc/php/8.2/fpm/pool.d/.
-COPY entrypoint.sh .
+COPY /tools/entrypoint.sh /usr/local/bin/entrypoint.sh
     
-RUN chmod +x entrypoint.sh
-ENTRYPOINT ["./entrypoint.sh"]
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
     
 CMD ["php-fpm8.2", "-F"]

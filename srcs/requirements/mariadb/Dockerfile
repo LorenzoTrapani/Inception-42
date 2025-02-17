@@ -5,7 +5,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y mariadb-server cu
 
 # Copia il file di configurazione e l'entrypoint
 COPY mariadb-server.cnf /etc/mysql/mariadb.conf.d/
-COPY entrypoint.sh /usr/local/bin/
+COPY /tools/entrypoint.sh /usr/local/bin/
 
 # Crea la directory per il socket (MariaDB)
 RUN mkdir -p /run/mysqld && chown mysql:mysql /run/mysqld

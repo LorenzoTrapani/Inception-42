@@ -7,15 +7,11 @@ RUN apt-get update -y && \
 RUN apt-get install -y openssl && \
     mkdir -p /usr/lib/ssl && \
     mkdir -p /etc/ssl/certs && \
-    mkdir -p /etc/ssl/private 
-
-RUN mkdir -p /var/www/html
-#  && \
-    # chown -R www-data:www-data /var/www/html && \
-    # chmod -R 755 /var/www/html
+    mkdir -p /etc/ssl/private && \
+    mkdir -p /var/www/html
 
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY /tools/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
 

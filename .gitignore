@@ -1,0 +1,11 @@
+# Ignora la cartella .git (già presente in .dockerignore)
+.git/
+# Ignora i file temporanei dell'IDE (ad esempio, VSCode)
+.vscode/
+# Ignora file di configurazione locali
+.env
+# Ignora i file di build
+build/
+dist/
+# Ignora file di log
+*.log
