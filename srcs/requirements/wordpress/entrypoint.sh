@@ -1,37 +1,46 @@
 #!/bin/bash
 
-echo "inizio wp"
+echo "Inizio configurazione di WordPress..."
 
-
-cp /tmp/wp-config.php /var/www/wp-config.php
-
-# Crea il wp-config.php se non esiste
-if [ ! -f /var/www/wp-config.php ]; then
-  curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-  chmod +x wp-cli.phar
-  ./wp-cli.phar core download --allow-root
-  ./wp-cli.phar config create \
-    --dbname="$DB_NAME" \
-    --dbuser="$DB_USER" \
-    --dbpass="$DB_PASSWORD" \
-    --dbhost="$DB_HOST" \
-    --allow-root
-  
-  # Aggiunge automaticamente le chiavi segrete di WordPress
-  wp_secret_keys=$(curl -s https://api.wordpress.org/secret-key/1.1/salt/)
-  echo "$wp_secret_keys" >> /var/www/html/wp-config.php
-
-  # Installa WordPress
-  ./wp-cli.phar core install \
-   --url=localhost \
-   --title=inception \
-   --admin_user=admin \
-   --admin_password=admin \
-   --admin_email=admin@admin.com \
-   --allow-root
+# Scarica wp-cli se non esiste
+if [ ! -f "/usr/local/bin/wp" ]; then
+    echo "Scarico wp-cli..."
+    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+    chmod +x wp-cli.phar
+    mv wp-cli.phar /usr/local/bin/wp
 fi
 
-echo "wp installato"
+if  ! wp core is-installed --path=/var/www/html --allow-root 2>dev/null ; then
+    echo "Scarico WordPress..."
+    wp core download --path=/var/www/html --allow-root
 
-# Avvia PHP-FPM in modalità foreground
+    if [ ! -f /var/www/wp-config.php ]; then
+        echo "Configuro WordPress con valori fissi..."
+        wp config create \
+            --path=/var/www/html \
+            --dbname="wordpress" \
+            --dbuser="wpuser" \
+            --dbpass="password" \
+            --dbhost="mariadb" \
+            --allow-root
+    fi
+    
+    echo "Installazione di WordPress..."
+    wp core install \
+        --path=/var/www/html \
+        --url="lotrapan.42.fr" \
+        --title="Inception" \
+        --admin_user="lotrapan" \
+        --admin_password="password" \
+        --admin_email="lorenzotrapani00@gmail.com" \
+        --allow-root
+
+    echo "Creo utente aggiuntivo..."
+    wp user create npc npc@gmail.com --role=editor --user_pass="passwordnpc" --path=/var/www/html --allow-root
+fi
+
+echo "WordPress installato con successo!"
+
 php-fpm8.2 -F
+
+

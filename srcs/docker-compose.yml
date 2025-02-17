@@ -18,7 +18,7 @@ services:
 
   wordpress:
     build: requirements/wordpress/.
-    container_name: wp-php
+    container_name: wordpress
     volumes:
       - ${WP_VOLUME}:/var/www/html
     env_file:
