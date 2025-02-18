@@ -1,14 +1,14 @@
 services:
   nginx:
-    build:  requirements/nginx/.
     container_name: nginx
+    build:  requirements/nginx/.
+    restart: always
     ports:
       - "443:443"
     volumes:
       - ${WP_VOLUME}:/var/www/html
       - ${CERTS_VOLUME}:/etc/ssl
       - ./requirements/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./openssl/openssl.cnf:/usr/lib/ssl/openssl.cnf
     networks:
       - inception_net
     depends_on:
@@ -17,8 +17,9 @@ services:
       - .env
 
   wordpress:
-    build: requirements/wordpress/.
     container_name: wordpress
+    build: requirements/wordpress/.
+    restart: always
     volumes:
       - ${WP_VOLUME}:/var/www/html
     env_file:
@@ -30,8 +31,9 @@ services:
         condition: service_healthy
 
   mariadb:
-    build: requirements/mariadb/.
     container_name: mariadb
+    build: requirements/mariadb/.
+    restart: always
     volumes:
       - ${MARIADB_VOLUME}:/var/lib/mysql
     networks:

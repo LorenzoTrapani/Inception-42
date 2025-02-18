@@ -8,35 +8,6 @@ for cmd in openssl nginx; do
     fi
 done
 
-echo "Avvio configurazione SSL e Nginx..."
-
-DOMAIN_NAME=${DOMAIN_NAME:-"lotrapan.42.fr"}
-P_KEY_=${P_KEY_:-"/etc/ssl/private/server.key"}
-CERTS_=${CERTS_:-"/etc/ssl/certs/server.crt"}
-CERTS_VOLUME=${CERTS_VOLUME:-"/home/lotrapan/data/certs"}
-
-# Creazione della directory per i certificati se non esiste
-mkdir -p "$CERTS_VOLUME"
-
-# Creazione delle directory per i certificati e chiavi se non esistono
-mkdir -p /etc/ssl/private && chmod 700 /etc/ssl/private
-mkdir -p /etc/ssl/certs
-
-# Generazione del certificato SSL autofirmato
-echo "Generazione del certificato SSL per $DOMAIN_NAME..."
-openssl req -config /etc/ssl/openssl.cnf -nodes -new -x509 \
-    -keyout "$P_KEY_" \
-    -out "$CERTS_" \
-    -days 365 \
-    -subj "/C=IT/ST=Italy/L=Rome/O=Ecole42/OU=Luiss/CN=$DOMAIN_NAME"
-
-if [[ $? -eq 0 ]]; then
-    echo "Certificato SSL generato correttamente."
-else
-    echo "Errore nella generazione del certificato."
-    exit 1
-fi
-
 # Verifica della configurazione di Nginx
 CONFIG_FILE="/etc/nginx/nginx.conf"
 if [[ -f "$CONFIG_FILE" ]]; then
@@ -45,8 +16,27 @@ else
     echo "File di configurazione di Nginx non trovato!"
     exit 1
 fi
+echo "Avvio configurazione SSL e Nginx..."
 
-# Avvio del servizio Nginx
+DOMAIN_NAME=${DOMAIN_NAME:-"lotrapan.42.fr"}
+CERTS_=${CERTS_:-"/etc/ssl/certs/server.crt"}
+P_KEY_=${P_KEY_:-"/etc/ssl/private/server.key"}
+
+
+# Generazione del certificato SSL autofirmato
+echo "Generazione del certificato SSL per $DOMAIN_NAME..."
+openssl req -nodes -new -x509 \
+    -keyout "$P_KEY_" \
+    -out "$CERTS_" \
+    -subj "/C=IT/ST=Italy/L=Florence/O=Ecole42/OU=Luiss/CN=$DOMAIN_NAME" 2>dev/null
+
+if [[ $? -ne 0 ]]; then
+    echo "Error: Failed to generate self-signed certificate!"
+else
+    echo "Self-signed certificate generated successfully."
+fi
+
+
 echo "Avvio di Nginx..."
 nginx -g "daemon off;"
 

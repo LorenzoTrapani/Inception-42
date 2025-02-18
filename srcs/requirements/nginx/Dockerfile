@@ -4,8 +4,6 @@ RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y nginx openssl
 
-    # apt-get install -y openssl && \
-    # mkdir -p /usr/lib/ssl && \
 RUN mkdir -p /etc/ssl/certs && \
     mkdir -p /etc/ssl/private && \
     mkdir -p /var/www/html
