@@ -18,9 +18,9 @@ else
 fi
 echo "Avvio configurazione SSL e Nginx..."
 
-DOMAIN_NAME=${DOMAIN_NAME:-"lotrapan.42.fr"}
-CERTS_=${CERTS_:-"/etc/ssl/certs/server.crt"}
-P_KEY_=${P_KEY_:-"/etc/ssl/private/server.key"}
+# DOMAIN_NAME=${DOMAIN_NAME:-"lotrapan.42.fr"}
+# CERTS_=${CERTS_:-"/etc/ssl/certs/server.crt"}
+# P_KEY_=${P_KEY_:-"/etc/ssl/private/server.key"}
 
 
 # Generazione del certificato SSL autofirmato
