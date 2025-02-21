@@ -1,7 +1,7 @@
 FROM debian:latest
 
 RUN apt-get update -y && apt-get upgrade -y && apt install -y php-fpm \
-    php-mysqli \
+    php-mysqli mariadb-client \
     curl
 
 COPY www.conf /etc/php/8.2/fpm/pool.d/.
