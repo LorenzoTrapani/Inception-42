@@ -3,11 +3,12 @@ DOCKER_COMPOSE := docker compose -f $(COMPOSE_FILE)
 
 .PHONY: build up stop remove
 
-build:
-	$(DOCKER_COMPOSE) build
-
 up: build
 	$(DOCKER_COMPOSE) up
+	
+build:
+	sudo mkdir -p ~/data/wordpress ~/data/mariadb
+
 
 up-build: build
 	$(DOCKER_COMPOSE) up --build

@@ -9,3 +9,4 @@ build/
 dist/
 # Ignora file di log
 *.log
+srcs/web

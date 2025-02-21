@@ -7,8 +7,9 @@ COPY /tools/entrypoint.sh /usr/local/bin/
 
 # Crea la directory per il socket (MariaDB)
 RUN mkdir -p /run/mysqld && chown mysql:mysql /run/mysqld
-
+RUN mkdir -p /var/lib/mysql
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
+CMD ["mysqld"]

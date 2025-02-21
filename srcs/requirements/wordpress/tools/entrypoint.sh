@@ -2,6 +2,7 @@
 
 echo "Inizio configurazione di WordPress..."
 
+cd /
 # Scarica wp-cli se non esiste
 if [ ! -f "/usr/local/bin/wp" ]; then
     echo "Scarico wp-cli..."
@@ -10,24 +11,25 @@ if [ ! -f "/usr/local/bin/wp" ]; then
     mv wp-cli.phar /usr/local/bin/wp
 fi
 
-if  ! wp core is-installed --path=/var/www/html --allow-root 2>dev/null ; then
+cd /var/www/html
+if  ! wp core is-installed --allow-root 2>/dev/null ; then
     echo "Scarico WordPress..."
-    wp core download --path=/var/www/html --allow-root
+    wp core download --allow-root
 
-    if [ ! -f /var/www/wp-config.php ]; then
-        echo "Configuro WordPress con valori fissi..."
+    if [ ! -e wp-config.php ]; then
+        echo -e "\e[92mConfiguro WordPress con valori fissi...\e[;0m"
         wp config create \
-            --path=/var/www/html \
             --dbname="wordpress" \
             --dbuser="wpuser" \
             --dbpass="password" \
             --dbhost="mariadb" \
             --allow-root
     fi
-    
+    if ! wp db check --allow-root; then
+		wp db create --allow-root
+	fi
     echo "Installazione di WordPress..."
     wp core install \
-        --path=/var/www/html \
         --url="lotrapan.42.fr" \
         --title="Inception" \
         --admin_user="lotrapan" \
@@ -36,7 +38,7 @@ if  ! wp core is-installed --path=/var/www/html --allow-root 2>dev/null ; then
         --allow-root
 
     echo "Creo utente aggiuntivo..."
-    wp user create npc npc@gmail.com --role=editor --user_pass="passwordnpc" --path=/var/www/html --allow-root
+    wp user create npc npc@gmail.com --role=editor --user_pass="passwordnpc" --allow-root
 fi
 
 echo "WordPress installato con successo!"

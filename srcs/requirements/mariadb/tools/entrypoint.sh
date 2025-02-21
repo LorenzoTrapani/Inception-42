@@ -20,15 +20,16 @@ mysqld --skip-networking &
 MYSQL_PID=$!
 
 # Attendi che MySQL sia pronto
-# until mysqladmin ping --silent; do
-#     echo "Aspettando che MySQL sia pronto..."
-#     sleep 1
-# done
+until mysqladmin ping --silent; do
+    echo "Aspettando che MySQL sia pronto..."
+    sleep 1
+done
 
+# CREATE USER IF NOT EXISTS 'wpuser'@'%' IDENTIFIED BY 'password';
+# GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'%' WITH GRANT OPTION;
 mysql -u root <<EOF
 CREATE DATABASE IF NOT EXISTS wordpress;
-CREATE USER IF NOT EXISTS 'wpuser'@'%' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON *.* TO 'wpuser'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'%' IDENTIFIED BY 'password';
 FLUSH PRIVILEGES;
 EOF
 
