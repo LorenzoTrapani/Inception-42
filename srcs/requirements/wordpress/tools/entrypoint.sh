@@ -3,7 +3,7 @@
 echo "Inizio configurazione di WordPress..."
 
 cd /
-# Scarica wp-cli se non esiste
+
 if [ ! -f "/usr/local/bin/wp" ]; then
     echo "Scarico wp-cli..."
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -17,12 +17,12 @@ if  ! wp core is-installed --allow-root 2>/dev/null ; then
     wp core download --allow-root
 
     if [ ! -e wp-config.php ]; then
-        echo -e "\e[92mConfiguro WordPress con valori fissi...\e[;0m"
+        echo -e "\e[92mConfiguro WordPress...\e[;0m"
         wp config create \
-            --dbname="wordpress" \
-            --dbuser="wpuser" \
-            --dbpass="password" \
-            --dbhost="mariadb" \
+            --dbname="${MYSQL_DATABASE}" \
+            --dbuser="${MYSQL_USER}" \
+            --dbpass="${MYSQL_PASSWORD}" \
+            --dbhost="${MYSQL_HOSTNAME}" \
             --allow-root
     fi
     if ! wp db check --allow-root; then
@@ -30,15 +30,15 @@ if  ! wp core is-installed --allow-root 2>/dev/null ; then
 	fi
     echo "Installazione di WordPress..."
     wp core install \
-        --url="lotrapan.42.fr" \
-        --title="Inception" \
-        --admin_user="lotrapan" \
-        --admin_password="password" \
-        --admin_email="lorenzotrapani00@gmail.com" \
+        --url="${DOMAIN_NAME}" \
+        --title="${WP_TITLE}" \
+        --admin_user="${WP_ADMIN_USER}" \
+        --admin_password="${WP_ADMIN_PASSWORD}" \
+        --admin_email="${WP_ADMIN_EMAIL}" \
         --allow-root
 
     echo "Creo utente aggiuntivo..."
-    wp user create npc npc@gmail.com --role=editor --user_pass="passwordnpc" --allow-root
+    wp user create ${WP_USER} ${WP_USER_EMAIL} --role=editor --user_pass="${WP_USER_PASSWORD}" --allow-root
 fi
 
 echo "WordPress installato con successo!"
