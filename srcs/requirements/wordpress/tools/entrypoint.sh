@@ -43,6 +43,7 @@ fi
 
 echo "WordPress installato con successo!"
 
-php-fpm8.2 -F
+exec php-fpm8.2 -F
+
 
 

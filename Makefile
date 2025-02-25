@@ -46,7 +46,6 @@ down:
 
 clean: down
 	@echo "$(RED)Performing deep clean...$(RESET)"
-	@docker system prune -a --force
 	@docker volume rm $$(docker volume ls -q) 2>/dev/null || true
 	@sudo rm -rf ~/data/wordpress
 	@sudo rm -rf ~/data/mariadb
