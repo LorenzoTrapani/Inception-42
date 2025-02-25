@@ -4,7 +4,8 @@ echo "Inizializzo MariaDB..."
 
 # Assicurati che la directory del socket esista
 mkdir -p /run/mysqld
-# chown -R mysql:mysql /run/mysqld
+chown -R mysql:mysql /run/mysqld
+chmod -R 755 /var/lib/mysql
 
 # Inizializza il database se non è già stato inizializzato
 if [ ! -d "/var/lib/mysql/mysql" ]; then

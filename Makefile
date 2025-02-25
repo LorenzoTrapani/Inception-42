@@ -1,37 +1,59 @@
 COMPOSE_FILE := ./srcs/docker-compose.yml
 DOCKER_COMPOSE := docker compose -f $(COMPOSE_FILE)
 
-.PHONY: build up stop remove
+GREEN := \033[0;32m
+YELLOW := \033[0;33m
+RED := \033[0;31m
+CYAN := \033[0;36m
+RESET := \033[0m
 
 up: build
+	@echo "$(GREEN)Starting containers...$(RESET)"
 	$(DOCKER_COMPOSE) up
-	
-build:
-	sudo mkdir -p ~/data/wordpress ~/data/mariadb
 
+build:
+	@echo "$(CYAN)Creating necessary directories...$(RESET)"
+	@sudo mkdir -p ~/data/wordpress ~/data/mariadb
+	@echo "$(GREEN)Directories created successfully!$(RESET)"
 
 up-build: build
+	@echo "$(GREEN)Building and starting containers...$(RESET)"
 	$(DOCKER_COMPOSE) up --build
 
 stop:
 	@containers=$$(docker ps -aq); \
 	if [ -z "$$containers" ]; then \
-		echo "No containers to stop."; \
+		echo "$(YELLOW)No containers to stop.$(RESET)"; \
 	else \
+		echo "$(RED)Stopping all containers...$(RESET)"; \
 		docker stop $$containers; \
-		echo "All containers stopped successfully."; \
+		echo "$(GREEN)All containers stopped successfully.$(RESET)"; \
 	fi
 
 remove:
 	@containers=$$(docker ps -aq); \
 	if [ -z "$$containers" ]; then \
-		echo "No containers to remove."; \
+		echo "$(YELLOW)No containers to remove.$(RESET)"; \
 	else \
+		echo "$(RED)Removing all containers...$(RESET)"; \
 		docker rm $$containers; \
-		echo "All containers removed successfully."; \
+		echo "$(GREEN)All containers removed successfully.$(RESET)"; \
 	fi
 
-reset:
+down:
+	@echo "$(RED)Shutting down and removing containers, volumes, and images...$(RESET)"
 	$(DOCKER_COMPOSE) down -v --rmi all
 
-fclean: stop remove
+clean: down
+	@echo "$(RED)Performing deep clean...$(RESET)"
+	@docker system prune -a --force
+	@docker volume rm $$(docker volume ls -q) 2>/dev/null || true
+	@sudo rm -rf ~/data/wordpress
+	@sudo rm -rf ~/data/mariadb
+	@echo "$(GREEN)Cleanup completed!$(RESET)"
+
+fclean: stop remove clean
+
+re: fclean up-build
+
+.PHONY: build up up-build stop remove down clean fclean re  
