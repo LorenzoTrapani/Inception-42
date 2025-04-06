@@ -9,7 +9,7 @@ RESET := \033[0m
 
 up: build
 	@echo "$(GREEN)Starting containers...$(RESET)"
-	$(DOCKER_COMPOSE) up
+	$(DOCKER_COMPOSE) up -d
 
 build:
 	@echo "$(CYAN)Creating necessary directories...$(RESET)"
@@ -18,7 +18,7 @@ build:
 
 up-build: build
 	@echo "$(GREEN)Building and starting containers...$(RESET)"
-	$(DOCKER_COMPOSE) up --build
+	$(DOCKER_COMPOSE) up --build -d
 
 stop:
 	@containers=$$(docker ps -aq); \
