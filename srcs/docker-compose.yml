@@ -40,8 +40,7 @@ services:
     networks:
       - inception_net
     depends_on:
-      mariadb:
-        condition: service_healthy
+      - mariadb
 
   mariadb:
     container_name: mariadb
@@ -55,10 +54,6 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     networks:
       - inception_net
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping"]
-      timeout: 20s
-      retries: 10
 
 volumes:
   wordpress-data:
