@@ -10,9 +10,6 @@ services:
       - ./requirements/nginx/nginx.conf:/etc/nginx/nginx.conf
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
-      - CERTS_=${CERTS_}
-      - P_KEY_=${P_KEY_}
-      - CONFIG_FILE=${CONFIG_FILE}
     networks:
       - inception_net
     depends_on:
