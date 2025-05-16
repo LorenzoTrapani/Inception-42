@@ -23,8 +23,8 @@ Key Components:
 
 # Main Features
 
-NGINX as the only entry point via HTTPS (port 443)
-Secure MariaDB configuration
-WordPress with PHP-FPM
-Data persistence through Docker volumes
-TLS/SSL encryption
+- NGINX as the only entry point via HTTPS (port 443)
+- Secure MariaDB configuration
+- WordPress with PHP-FPM
+- Data persistence through Docker volumes
+- TLS/SSL encryption
